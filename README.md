@@ -1,6 +1,6 @@
-# test-workflow
+# SAPPORO Test Workflow
 
-Workflows written in common workflow language (CWL)
+Workflows written in common workflow language (CWL) for testing SAPPORO
 
 # Run a workflow
 

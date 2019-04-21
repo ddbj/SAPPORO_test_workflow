@@ -1,7 +1,0 @@
-s3_upload_dir: string # default value of type "string". (optional)
-s3_bucket: string # type "string"
-aws_secret_access_key: string # type "string"
-aws_access_key_id: string # type "string"
-nthreads: 2 # default value of type "int". (optional)
-fastq_url: https://github.com/suecharo/test-workflow/raw/master/data/small.ERR034597_1.fastq # type "string"
-endpoint: s3.amazonaws.com
