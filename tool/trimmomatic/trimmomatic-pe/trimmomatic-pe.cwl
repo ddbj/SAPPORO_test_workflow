@@ -9,13 +9,13 @@ arguments:
   - position: 0
     valueFrom: PE
   - position: 4
-    valueFrom: $(inputs.fastq_1.nameroot).trimed.1P.fastq
+    valueFrom: $(inputs.fastq_1.nameroot).trimmed.1P.fastq
   - position: 5
-    valueFrom: $(inputs.fastq_1.nameroot).trimed.1U.fastq
+    valueFrom: $(inputs.fastq_1.nameroot).trimmed.1U.fastq
   - position: 6
-    valueFrom: $(inputs.fastq_1.nameroot).trimed.2P.fastq
+    valueFrom: $(inputs.fastq_1.nameroot).trimmed.2P.fastq
   - position: 7
-    valueFrom: $(inputs.fastq_1.nameroot).trimed.2U.fastq
+    valueFrom: $(inputs.fastq_1.nameroot).trimmed.2U.fastq
   - position: 8
     valueFrom: ILLUMINACLIP:/usr/local/share/trimmomatic/adapters/TruSeq2-PE.fa:2:40:15
   - position: 9
@@ -42,22 +42,22 @@ inputs:
     inputBinding:
       position: 3
 outputs:
-  trimed_fastq1P:
+  trimmed_fastq1P:
     type: File
     outputBinding:
-      glob: $(inputs.fastq_1.nameroot).trimed.1P.fastq
-  trimed_fastq1U:
+      glob: $(inputs.fastq_1.nameroot).trimmed.1P.fastq
+  trimmed_fastq1U:
     type: File
     outputBinding:
-      glob: $(inputs.fastq_1.nameroot).trimed.1U.fastq
-  trimed_fastq2P:
+      glob: $(inputs.fastq_1.nameroot).trimmed.1U.fastq
+  trimmed_fastq2P:
     type: File
     outputBinding:
-      glob: $(inputs.fastq_1.nameroot).trimed.2P.fastq
-  trimed_fastq2U:
+      glob: $(inputs.fastq_1.nameroot).trimmed.2P.fastq
+  trimmed_fastq2U:
     type: File
     outputBinding:
-      glob: $(inputs.fastq_1.nameroot).trimed.2U.fastq
+      glob: $(inputs.fastq_1.nameroot).trimmed.2U.fastq
   stdout: stdout
   stderr: stderr
 stdout: trimmomatic-pe-stdout.log

@@ -9,7 +9,7 @@ arguments:
   - position: 0
     valueFrom: SE
   - position: 3
-    valueFrom: $(inputs.fastq.nameroot).trimed.fq
+    valueFrom: $(inputs.fastq.nameroot).trimmed.fq
   - position: 4
     valueFrom: ILLUMINACLIP:/usr/local/share/trimmomatic/adapters/TruSeq2-SE.fa:2:40:15
   - position: 5
@@ -32,10 +32,10 @@ inputs:
     inputBinding:
       position: 2
 outputs:
-  trimed_fastq:
+  trimmed_fastq:
     type: File
     outputBinding:
-      glob: $(inputs.fastq.nameroot).trimed.fq
+      glob: $(inputs.fastq.nameroot).trimmed.fq
   stdout: stdout
   stderr: stderr
 stdout: trimmomatic-se-stdout.log
