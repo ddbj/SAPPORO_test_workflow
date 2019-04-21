@@ -28,7 +28,7 @@ inputs:
       position: 2
   s3_upload_dir:
     type: string?
-    default: sapporo_upload
+    default: cwl_upload
     inputBinding:
       position: 3
   upload_file_list:

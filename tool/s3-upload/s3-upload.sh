@@ -8,6 +8,9 @@ for file in $(find . -type f); do
   if [ $file = "./upload_url.txt" ]; then
     continue
   fi
+  if [ $file = "./s3-upload-stdout.log" ]; then
+    continue
+  fi
   if [ $file = "./s3-upload-stderr.log" ]; then
     continue
   fi
