@@ -39,7 +39,10 @@ inputs:
     type: string
 outputs:
   upload_url:
-    type: stdout
+    type: File
+    outputBinding:
+      glob: upload_url.txt
+  stdout: stdout
   stderr: stderr
-stdout: upload_url.txt
+stdout: s3-upload-stdout.log
 stderr: s3-upload-stderr.log

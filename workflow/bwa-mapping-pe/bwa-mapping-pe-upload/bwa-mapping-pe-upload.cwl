@@ -1,20 +1,19 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: Workflow
+doc: BWA-mapping-PE is a mapping workflow using BWA for Peared-end reads. It receives two fastq files and one reference genome. Please enter download link of fastq files and reference genome. The reference genome will be indexed by BWA. Trimming, QC and bam sort will do too. QC result and sam / bam file will be output.
 requirements:
   MultipleInputFeatureRequirement: {}
-doc: BWA-mapping-PE is a mapping workflow using BWA for Peared-end reads. It receives two fastq files and one reference genome. Please enter download link of fastq files and reference genome. The reference genome will be indexed by BWA. Trimming, QC and bam sort will do too. QC result and sam / bam file will be output.
-
 inputs:
-  fastq1_url:
-    type: string
-    label: Download link of FastQ file from next generation sequencer
-  fastq2_url:
-    type: string
-    label: Download link of FastQ file from next generation sequencer
-  fasta_url:
-    type: string
-    label: Download link of Fasta file(e.g. GRCh38)
+  fastq_1:
+    type: File
+    label: Fastq file from next generation sequencer
+  fastq_2:
+    type: File
+    label: Fastq file from next generation sequencer
+  fasta:
+    type: File
+    label: Fasta file
   nthreads:
     type: int?
     default: 2
@@ -31,237 +30,139 @@ inputs:
   s3_upload_dir:
     type: string
     default: cwl_upload
-
 steps:
-  download_fastq1:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/curl.cwl
-    in:
-      download_url: fastq1_url
-      downloaded_file_name:
-        default: fastq1.fq
-      stderr_log_file_name:
-        default: curl_fastq1_stderr.log
-    out:
-      - downloaded_file
-      - stderr_log
-  download_fastq2:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/curl.cwl
-    in:
-      download_url: fastq2_url
-      downloaded_file_name:
-        default: fastq2.fq
-      stderr_log_file_name:
-        default: curl_fastq2_stderr.log
-    out:
-      - downloaded_file
-      - stderr_log
-  download_fasta:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/curl.cwl
-    in:
-      download_url: fasta_url
-      downloaded_file_name:
-        default: fasta.fa
-      stderr_log_file_name:
-        default: curl_fasta_stderr.log
-    out:
-      - downloaded_file
-      - stderr_log
-  qc_fastq1:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/fastqc.cwl
+  qc_fastq_1:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
-      fastq: download_fastq1/downloaded_file
-      stdout_log_file_name:
-        default: fastqc_fastq1_stdout.log
-      stderr_log_file_name:
-        default: fastqc_fastq1_stderr.log
+      fastq: fastq_1
     out:
       - qc_result
-      - stdout_log
-      - stderr_log
-  qc_fastq2:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/fastqc.cwl
+      - stdout
+      - stderr
+  qc_fastq_2:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
-      fastq: download_fastq2/downloaded_file
-      stdout_log_file_name:
-        default: fastqc_fastq2_stdout.log
-      stderr_log_file_name:
-        default: fastqc_fastq2_stderr.log
+      fastq: fastq_2
     out:
       - qc_result
-      - stdout_log
-      - stderr_log
+      - stdout
+      - stderr
   trimming:
-    run: https://github.com/suecharo/test-workflow/raw/master/tool/trimmomatic_pe.cwl
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/trimmomatic/trimmomatic-pe/trimmomatic-pe.cwl
     in:
       nthreads: nthreads
-      fastq1: download_fastq1/downloaded_file
-      fastq2: download_fastq2/downloaded_file
-      stdout_log_file_name:
-        default: trimmomatic_stdout.log
-      stderr_log_file_name:
-        default: trimmomatic_stderr.log
+      fastq_1: fastq_1
+      fastq_2: fastq_2
     out:
-      - trimed_fastq1P
-      - trimed_fastq1U
-      - trimed_fastq2P
-      - trimed_fastq2U
-      - stdout_log
-      - stderr_log
-  qc_trimed_fastq1:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/fastqc.cwl
+      - trimmed_fastq1P
+      - trimmed_fastq1U
+      - trimmed_fastq2P
+      - trimmed_fastq2U
+      - stdout
+      - stderr
+  qc_trimmed_fastq_1:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
-      fastq: trimming/trimed_fastq1P
-      stdout_log_file_name:
-        default: fastqc_trimed_fastq1_stdout.log
-      stderr_log_file_name:
-        default: fastqc_trimed_fastq1_stderr.log
+      fastq: trimming/trimmed_fastq1P
     out:
       - qc_result
-      - stdout_log
-      - stderr_log
-  qc_trimed_fastq2:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/fastqc.cwl
+      - stdout
+      - stderr
+  qc_trimmed_fastq_2:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
-      fastq: trimming/trimed_fastq2P
-      stdout_log_file_name:
-        default: fastqc_trimed_fastq2_stdout.log
-      stderr_log_file_name:
-        default: fastqc_trimed_fastq2_stderr.log
+      fastq: trimming/trimmed_fastq2P
     out:
       - qc_result
-      - stdout_log
-      - stderr_log
-  bwa_index_build:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/bwa_index.cwl
+      - stdout
+      - stderr
+  bwa-index-build:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/bwa/bwa-index/bwa-index.cwl
     in:
-      fasta: download_fasta/downloaded_file
-      stdout_log_file_name:
-        default: bwa_index_build_stdout.log
-      stderr_log_file_name:
-        default: bwa_index_build_stderr.log
+      fasta: fasta
     out:
       - amb
       - ann
       - bwt
       - pac
       - sa
-      - stdout_log
-      - stderr_log
-  bwa_mapping:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/bwa_mem_pe.cwl
+      - stdout
+      - stderr
+  bwa-mapping:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/bwa/bwa-mapping-pe/bwa-mapping-pe.cwl
     in:
       nthreads: nthreads
-      fasta: download_fasta/downloaded_file
-      amb: bwa_index_build/amb
-      ann: bwa_index_build/ann
-      bwt: bwa_index_build/bwt
-      pac: bwa_index_build/pac
-      sa: bwa_index_build/sa
-      fastq1: trimming/trimed_fastq1P
-      fastq2: trimming/trimed_fastq2P
-      stderr_log_file_name:
-        default: bwa_mapping_stderr.log
+      fasta: fasta
+      amb: bwa-index-build/amb
+      ann: bwa-index-build/ann
+      bwt: bwa-index-build/bwt
+      pac: bwa-index-build/pac
+      sa: bwa-index-build/sa
+      fastq_1: trimming/trimmed_fastq1P
+      fastq_2: trimming/trimmed_fastq2P
     out:
       - sam
-      - stderr_log
+      - stderr
   sam2bam:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/samtools_sam2bam.cwl
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/samtools/samtools-sam2bam/samtools-sam2bam.cwl
     in:
-      sam: bwa_mapping/sam
-      stderr_log_file_name:
-        default: samtools_sam2bam_stderr.log
+      sam: bwa-mapping/sam
     out:
       - bam
-      - stderr_log
-  mark_duplicates:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/picard_mark_duplicates.cwl
+      - stderr
+  mark-duplicates:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/picard/picard-mark-duplicates/picard-mark-duplicates.cwl
     in:
       bam: sam2bam/bam
-      stdout_log_file_name:
-        default: mark_duplicates_stdout.log
-      stderr_log_file_name:
-        default: mark_duplicates_stderr.log
     out:
       - marked_bam
       - metrix
-      - stdout_log
-      - stderr_log
-  sort_bam:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/picard_sort_bam.cwl
+      - stdout
+      - stderr
+  sort-bam:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/picard/picard-sort-bam/picard-sort-bam.cwl
     in:
-      bam: mark_duplicates/marked_bam
-      stdout_log_file_name:
-        default: sort_bam_stdout.log
-      stderr_log_file_name:
-        default: sort_bam_stderr.log
+      bam: mark-duplicates/marked_bam
     out:
       - sorted_bam
-      - stdout_log
-      - stderr_log
-  s3_upload:
-    run: https://raw.githubusercontent.com/suecharo/test-workflow/master/tool/s3_upload.cwl
+      - stdout
+      - stderr
+  s3-upload:
+    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/s3-upload/s3-upload.cwl
     in:
-      aws_access_key_id: aws_access_key_id
-      aws_secret_access_key: aws_secret_access_key
-      upload_file_list:
-        source:
-          - download_fastq1/downloaded_file
-          - download_fastq1/stderr_log
-          - download_fastq2/downloaded_file
-          - download_fastq2/stderr_log
-          - download_fasta/downloaded_file
-          - download_fasta/stderr_log
-          - qc_fastq1/qc_result
-          - qc_fastq1/stdout_log
-          - qc_fastq1/stderr_log
-          - qc_fastq1/qc_result
-          - qc_fastq1/stdout_log
-          - qc_fastq1/stderr_log
-          - trimming/trimed_fastq1P
-          - trimming/trimed_fastq1U
-          - trimming/trimed_fastq2P
-          - trimming/trimed_fastq2U
-          - trimming/stdout_log
-          - trimming/stderr_log
-          - qc_trimed_fastq1/qc_result
-          - qc_trimed_fastq1/stdout_log
-          - qc_trimed_fastq1/stderr_log
-          - qc_trimed_fastq1/qc_result
-          - qc_trimed_fastq1/stdout_log
-          - qc_trimed_fastq1/stderr_log
-          - bwa_index_build/amb
-          - bwa_index_build/ann
-          - bwa_index_build/bwt
-          - bwa_index_build/pac
-          - bwa_index_build/sa
-          - bwa_index_build/stdout_log
-          - bwa_index_build/stderr_log
-          - bwa_mapping/sam
-          - bwa_mapping/stderr_log
-          - sam2bam/bam
-          - sam2bam/stderr_log
-          - mark_duplicates/marked_bam
-          - mark_duplicates/metrix
-          - mark_duplicates/stdout_log
-          - mark_duplicates/stderr_log
-          - sort_bam/sorted_bam
-          - sort_bam/stdout_log
-          - sort_bam/stderr_log
       endpoint: endpoint
       s3_bucket: s3_bucket
       s3_upload_dir: s3_upload_dir
-      upload_url_file_name:
-        default: upload_url.txt
-      stderr_log_file_name:
-        default: s3_upload_stderr.log
+      upload_file_list:
+        source:
+          - qc_fastq_1/qc_result
+          - qc_fastq_2/qc_result
+          - trimming/trimmed_fastq1P
+          - trimming/trimmed_fastq1U
+          - trimming/trimmed_fastq2P
+          - trimming/trimmed_fastq2U
+          - qc_trimmed_fastq_1/qc_result
+          - qc_trimmed_fastq_2/qc_result
+          - bwa-index-build/amb
+          - bwa-index-build/ann
+          - bwa-index-build/bwt
+          - bwa-index-build/pac
+          - bwa-index-build/sa
+          - bwa-mapping/sam
+          - sam2bam/bam
+          - mark-duplicates/marked_bam
+          - mark-duplicates/metrix
+          - sort-bam/sorted_bam
+      aws_access_key_id: aws_access_key_id
+      aws_secret_access_key: aws_secret_access_key
     out:
       - upload_url
-
+      - stderr
 outputs:
   upload_url:
     type: File
-    outputSource: s3_upload/upload_url
+    outputSource: s3-upload/upload_url

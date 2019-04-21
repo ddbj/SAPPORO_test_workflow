@@ -5,3 +5,6 @@ fastq_2: # type "File"
 fastq_1: # type "File"
   class: File
   path: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/test/data/small.ERR034597_1.fastq
+fasta: # type "File"
+  class: File
+  path: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/test/data/small.chr22.fa
