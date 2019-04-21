@@ -1,0 +1,25 @@
+sa:  # type "File"
+    class: File
+    path: a/file/path
+pac:  # type "File"
+    class: File
+    path: a/file/path
+nthreads: 2  # default value of type "int". (optional)
+fastq_2:  # type "File"
+    class: File
+    path: a/file/path
+fastq_1:  # type "File"
+    class: File
+    path: a/file/path
+fasta:  # type "File"
+    class: File
+    path: a/file/path
+bwt:  # type "File"
+    class: File
+    path: a/file/path
+ann:  # type "File"
+    class: File
+    path: a/file/path
+amb:  # type "File"
+    class: File
+    path: a/file/path

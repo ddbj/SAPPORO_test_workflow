@@ -2,36 +2,25 @@
 cwlVersion: v1.0
 class: CommandLineTool
 requirements:
-  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: quay.io/biocontainers/picard:2.18.20--0
-
-baseCommand:
-  [
-    java,
-    -jar,
-    /usr/local/share/picard-2.18.20-0/picard.jar,
-    MarkDuplicates,
-    ASSUME_SORT_ORDER=queryname,
-  ]
+baseCommand: picard
 arguments:
-  - position: 2
-    valueFrom: O=$(inputs.bam.nameroot).mark.bam
+  - position: 0
+    valueFrom: MarkDuplicates
+  - position: 1
+    valueFrom: ASSUME_SORT_ORDER=queryname
   - position: 3
+    valueFrom: O=$(inputs.bam.nameroot).mark.bam
+  - position: 4
     valueFrom: M=$(inputs.bam.nameroot).mark.metrix.txt
-
 inputs:
   bam:
     type: File
     inputBinding:
-      position: 1
+      position: 2
       prefix: I=
       separate: False
-  stdout_log_file_name:
-    type: string
-  stderr_log_file_name:
-    type: string
-
 outputs:
   marked_bam:
     type: File
@@ -41,9 +30,7 @@ outputs:
     type: File
     outputBinding:
       glob: "*.mark.metrix.txt"
-  stdout_log:
-    type: stdout
-  stderr_log:
-    type: stderr
-stdout: $(inputs.stdout_log_file_name)
-stderr: $(inputs.stderr_log_file_name)
+  stdout: stdout
+  stderr: stderr
+stdout: picard-mark-duplicates-stdout.log
+stderr: picard-mark-duplicates-stderr.log

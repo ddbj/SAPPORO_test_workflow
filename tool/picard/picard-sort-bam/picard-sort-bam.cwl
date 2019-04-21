@@ -2,42 +2,29 @@
 cwlVersion: v1.0
 class: CommandLineTool
 requirements:
-  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: quay.io/biocontainers/picard:2.18.20--0
-
-baseCommand:
-  [
-    java,
-    -jar,
-    /usr/local/share/picard-2.18.20-0/picard.jar,
-    SortSam,
-    SORT_ORDER=coordinate,
-  ]
+baseCommand: picard
 arguments:
-  - position: 2
+  - position: 0
+    valueFrom: SortSam
+  - position: 1
+    valueFrom: SORT_ORDER=coordinate
+  - position: 3
     valueFrom: O=$(inputs.bam.nameroot).sort.bam
-
 inputs:
   bam:
     type: File
     inputBinding:
-      position: 1
+      position: 2
       prefix: I=
       separate: False
-  stdout_log_file_name:
-    type: string
-  stderr_log_file_name:
-    type: string
-
 outputs:
   sorted_bam:
     type: File
     outputBinding:
       glob: "*.sort.bam"
-  stdout_log:
-    type: stdout
-  stderr_log:
-    type: stderr
-stdout: $(inputs.stdout_log_file_name)
-stderr: $(inputs.stderr_log_file_name)
+  stdout: stdout
+  stderr: stderr
+stdout: picard-sort-bam-stdout.log
+stderr: picard-sort-bam-stderr.log

@@ -2,12 +2,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 requirements:
-  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: quay.io/biocontainers/bwa:0.7.4--ha92aebf_0
-
-baseCommand: [bwa, index]
+baseCommand: bwa
 arguments:
+  - position: 0
+    valueFrom: index
   - position: 1
     prefix: -p
     valueFrom: $(inputs.fasta.nameroot)
@@ -16,11 +16,6 @@ inputs:
     type: File
     inputBinding:
       position: 2
-  stdout_log_file_name:
-    type: string
-  stderr_log_file_name:
-    type: string
-
 outputs:
   amb:
     type: File
@@ -42,9 +37,7 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.fasta.nameroot).sa
-  stdout_log:
-    type: stdout
-  stderr_log:
-    type: stderr
-stdout: $(inputs.stdout_log_file_name)
-stderr: $(inputs.stderr_log_file_name)
+  stdout: stdout
+  stderr: stderr
+stdout: bwa-index-stdout.log
+stderr: bwa-index-stderr.log

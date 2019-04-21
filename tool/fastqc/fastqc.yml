@@ -1,0 +1,4 @@
+nthreads: 2  # default value of type "int". (optional)
+fastq:  # type "File"
+    class: File
+    path: a/file/path

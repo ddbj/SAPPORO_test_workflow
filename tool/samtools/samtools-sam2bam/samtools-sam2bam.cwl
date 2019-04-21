@@ -2,23 +2,28 @@
 cwlVersion: v1.0
 class: CommandLineTool
 requirements:
-  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: quay.io/biocontainers/samtools:1.9--h8ee4bcc_1
-
-baseCommand: [samtools, view, -bS]
+baseCommand: samtools
+arguments:
+  - position: 0
+    valueFrom: view
+  - position: 1
+    valueFrom: -bS
 inputs:
+  nthreads:
+    type: int?
+    default: 2
+    inputBinding:
+      position: 1
+      prefix: -@
   sam:
     type: File
     inputBinding:
-      position: 1
-  stderr_log_file_name:
-    type: string
-
+      position: 3
 outputs:
   bam:
     type: stdout
-  stderr_log:
-    type: stderr
+  stderr: stderr
 stdout: $(inputs.sam.nameroot).bam
-stderr: $(inputs.stderr_log_file_name)
+stderr: samtools-sam2bam-stderr.log

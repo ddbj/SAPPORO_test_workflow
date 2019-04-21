@@ -2,16 +2,24 @@
 cwlVersion: v1.0
 class: CommandLineTool
 requirements:
-  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: quay.io/biocontainers/trimmomatic:0.38--1
-
-baseCommand: [java, -jar, /usr/local/share/trimmomatic/trimmomatic.jar, SE]
+baseCommand: trimmomatic
 arguments:
+  - position: 0
+    valueFrom: SE
   - position: 3
     valueFrom: $(inputs.fastq.nameroot).trimed.fq
   - position: 4
     valueFrom: ILLUMINACLIP:/usr/local/share/trimmomatic/adapters/TruSeq2-SE.fa:2:40:15
+  - position: 5
+    valueFrom: LEADING:20
+  - position: 6
+    valueFrom: TRAILING:20
+  - position: 7
+    valueFrom: SLIDINGWINDOW:4:15
+  - position: 8
+    valueFrom: MINLEN:36
 inputs:
   nthreads:
     type: int?
@@ -23,19 +31,12 @@ inputs:
     type: File
     inputBinding:
       position: 2
-  stdout_log_file_name:
-    type: string
-  stderr_log_file_name:
-    type: string
-
 outputs:
   trimed_fastq:
     type: File
     outputBinding:
       glob: $(inputs.fastq.nameroot).trimed.fq
-  stdout_log:
-    type: stdout
-  stderr_log:
-    type: stderr
-stdout: $(inputs.stdout_log_file_name)
-stderr: $(inputs.stderr_log_file_name)
+  stdout: stdout
+  stderr: stderr
+stdout: trimmomatic-se-stdout.log
+stderr: trimmomatic-se-stderr.log

@@ -2,7 +2,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
 requirements:
-  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: quay.io/biocontainers/bwa:0.7.15--1
   InitialWorkDirRequirement:
@@ -19,18 +18,35 @@ requirements:
         entryname: $(inputs.pac.basename)
       - entry: $(inputs.sa)
         entryname: $(inputs.sa.basename)
-
-baseCommand: [bwa, mem, -K, "100000000", -Y, -p]
+baseCommand: bwa
 arguments:
+  - position: 0
+    valueFrom: mem
+  - position: 1
+    valueFrom: -K
   - position: 2
+    valueFrom: "100000000"
+  - position: 3
+    valueFrom: -Y
+  - position: 4
+    valueFrom: -p
+  - position: 6
     valueFrom: $(inputs.fasta.dirname)/$(inputs.fasta.nameroot)
 inputs:
   nthreads:
     type: int?
     default: 2
     inputBinding:
-      position: 1
+      position: 5
       prefix: -t
+  fastq_1:
+    type: File
+    inputBinding:
+      position: 7
+  fastq_2:
+    type: File
+    inputBinding:
+      position: 8
   fasta:
     type: File
   amb:
@@ -43,21 +59,9 @@ inputs:
     type: File
   sa:
     type: File
-  fastq1:
-    type: File
-    inputBinding:
-      position: 3
-  fastq2:
-    type: File
-    inputBinding:
-      position: 4
-  stderr_log_file_name:
-    type: string
-
 outputs:
   sam:
     type: stdout
-  stderr_log:
-    type: stderr
-stdout: $(inputs.fastq1.nameroot).sam
-stderr: $(inputs.stderr_log_file_name)
+  stderr: stderr
+stdout: $(inputs.fastq_1.nameroot).sam
+stderr: bwa-mapping-pe-stderr.log

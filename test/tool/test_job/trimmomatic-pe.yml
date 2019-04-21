@@ -1,0 +1,7 @@
+nthreads: 2 # default value of type "int". (optional)
+fastq_2: # type "File"
+  class: File
+  path: ../../data/small.ERR034597_2.fastq
+fastq_1: # type "File"
+  class: File
+  path: ../../data/small.ERR034597_1.fastq

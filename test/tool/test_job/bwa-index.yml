@@ -1,0 +1,3 @@
+fasta: # type "File"
+  class: File
+  path: ../../data/small.chr22.fa
