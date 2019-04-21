@@ -1,0 +1,3 @@
+/test/tool/test_job/s3-upload.yml
+/test/workflow/test_job/bwa-mapping-pe-upload.yml
+/test/workflow/test_job/trimming-and-qc-upload.yml
