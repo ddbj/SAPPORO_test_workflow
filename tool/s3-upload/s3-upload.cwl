@@ -1,5 +1,5 @@
 #!/usr/bin/env cwl-runner
-cwlVersion: v1.0
+cwlVersion: v1.1.0-dev1
 class: CommandLineTool
 requirements:
   DockerRequirement:
@@ -12,6 +12,8 @@ requirements:
         envValue: $(inputs.aws_secret_access_key)
   InitialWorkDirRequirement:
     listing: $(inputs.upload_file_list)
+  NetworkAccess:
+    networkAccess: true
 baseCommand: sh
 arguments:
   - position: 0
