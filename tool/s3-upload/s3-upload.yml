@@ -1,6 +1,6 @@
 upload_file_list:  # array of type "File"
   - class: File
-    path: a/file/path
+    location: a/file/path
 s3_upload_dir: sapporo_upload  # default value of type "string". (optional)
 s3_bucket: a_string  # type "string"
 endpoint: s3.amazonaws.com  # default value of type "string". (optional)

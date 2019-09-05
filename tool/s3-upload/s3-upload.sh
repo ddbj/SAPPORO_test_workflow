@@ -18,4 +18,4 @@ for file in $(find . -type f); do
 done
 
 aws --endpoint="http://${endpoint}" s3 cp --recursive s3-upload-tmp "s3://${s3_bucket}/${s3_upload_dir}/"
-printf "http://${endpoint}/${s3_bucket}/${s3_upload_dir}" > upload_url.txt
+printf "http://${endpoint}/${s3_bucket}/${s3_upload_dir}" >upload_url.txt
