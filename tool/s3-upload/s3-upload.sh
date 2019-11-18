@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eux
+set -eu
 endpoint=$1
 s3_bucket=$2
 s3_upload_dir=$3

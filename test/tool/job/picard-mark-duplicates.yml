@@ -1,0 +1,3 @@
+bam: # type "File"
+  class: File
+  location: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/test/data/small.ERR034597_1.bam

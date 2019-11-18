@@ -1,0 +1,4 @@
+sam: # type "File"
+  class: File
+  location: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/test/data/small.ERR034597_1.sam
+nthreads: 2 # default value of type "int". (optional)

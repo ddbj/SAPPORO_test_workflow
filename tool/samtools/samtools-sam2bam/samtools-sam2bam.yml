@@ -1,4 +1,4 @@
 sam:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path
 nthreads: 2  # default value of type "int". (optional)

@@ -9,4 +9,3 @@ RUN apk --update add --no-cache \
 USER root
 WORKDIR /workdir
 COPY s3-upload.sh /workdir/
-

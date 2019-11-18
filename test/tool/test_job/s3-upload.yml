@@ -1,8 +1,0 @@
-upload_file_list:  # array of type "File"
-  - class: File
-    location: a/file/path
-s3_upload_dir: sapporo_upload  # default value of type "string". (optional)
-s3_bucket: a_string  # type "string"
-endpoint: s3.amazonaws.com  # default value of type "string". (optional)
-aws_secret_access_key: a_string  # type "string"
-aws_access_key_id: a_string  # type "string"
