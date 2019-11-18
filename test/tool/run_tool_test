@@ -8,15 +8,15 @@ TOOL_DIR=$(cd $SCRIPT_DIR/../../tool && pwd)
 
 echo "Start test tools of SAPPORO_test_workflow"
 for tool in $(find $TOOL_DIR -type f -name *.cwl); do
-  if [[ $(basename $tool .cwl) == "s3-upload" ]]; then
-    continue
-  fi
   cd $(dirname $tool)
   template_file="$(dirname $tool)/$(basename $tool .cwl).yml"
   cwltool --validate $tool
   cwltool --make-template $tool >$template_file
   if [[ $(find $(dirname $tool) -name Dockerfile | wc -l) == 1 ]]; then
     bash "$(dirname $tool)/build.sh"
+  fi
+  if [[ $(basename $tool .cwl) == "s3-upload" ]]; then
+    continue
   fi
   job_file=$JOB_DIR/$(basename $tool .cwl).yml
   tmpdir=$(mktemp -d)
