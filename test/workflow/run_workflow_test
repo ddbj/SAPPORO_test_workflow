@@ -1,0 +1,24 @@
+#!/bin/bash
+set -eu
+
+SCRIPT_DIR=$(cd $(dirname $0) && pwd)
+cd $SCRIPT_DIR
+JOB_DIR="$SCRIPT_DIR/job"
+WORKFLOW_DIR=$(cd $SCRIPT_DIR/../../workflow && pwd)
+
+echo "Start test workflows of SAPPORO_test_workflow"
+for workflow in $(find $WORKFLOW_DIR -type f -name *.cwl); do
+  cd $(dirname $workflow)
+  template_file="$(dirname $workflow)/$(basename $workflow .cwl).yml"
+  cwltool --validate $workflow
+  cwltool --make-template $workflow >$template_file
+  if [[ $(find $(dirname $workflow) -type f -name *no-upload.cwl | wc -l) == 0 ]]; then
+    continue
+  fi
+  job_file=$JOB_DIR/$(basename $workflow .cwl).yml
+  tmpdir=$(mktemp -d)
+  trap "rm -rf $tmpdir" EXIT 1 2 3 15
+  cwltool --outdir $tmpdir $workflow $job_file
+  rm -rf $tmpdir
+done
+echo "Finish test workflows of SAPPORO_test_workflow"

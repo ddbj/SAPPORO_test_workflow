@@ -1,10 +1,10 @@
 nthreads: 2  # default value of type "int". (optional)
 fastq_2:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path
 fastq_1:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path
 fasta:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path

@@ -3,13 +3,13 @@ s3_bucket: a_string  # type "string"
 nthreads: 2  # default value of type "int". (optional)
 fastq_2:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path
 fastq_1:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path
 fasta:  # type "File"
     class: File
-    location: a/file/path
+    path: a/file/path
 endpoint: s3.amazonaws.com  # default value of type "string".
 aws_secret_access_key: a_string  # type "string"
 aws_access_key_id: a_string  # type "string"
