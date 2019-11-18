@@ -18,7 +18,7 @@ inputs:
     label: (optional) Number of cpu cores to be used
 steps:
   qc_fastq_1:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
       fastq: fastq_1
@@ -27,7 +27,7 @@ steps:
       - stdout
       - stderr
   qc_fastq_2:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
       fastq: fastq_2
@@ -36,7 +36,7 @@ steps:
       - stdout
       - stderr
   trimming:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/trimmomatic/trimmomatic-pe/trimmomatic-pe.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/trimmomatic/trimmomatic-pe/trimmomatic-pe.cwl
     in:
       nthreads: nthreads
       fastq_1: fastq_1
@@ -49,7 +49,7 @@ steps:
       - stdout
       - stderr
   qc_trimmed_fastq_1:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
       fastq: trimming/trimmed_fastq1P
@@ -58,7 +58,7 @@ steps:
       - stdout
       - stderr
   qc_trimmed_fastq_2:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
       fastq: trimming/trimmed_fastq2P
@@ -67,7 +67,7 @@ steps:
       - stdout
       - stderr
   bwa-index-build:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/bwa/bwa-index/bwa-index.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/bwa/bwa-index/bwa-index.cwl
     in:
       fasta: fasta
     out:
@@ -79,7 +79,7 @@ steps:
       - stdout
       - stderr
   bwa-mapping:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/bwa/bwa-mapping-pe/bwa-mapping-pe.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/bwa/bwa-mapping-pe/bwa-mapping-pe.cwl
     in:
       nthreads: nthreads
       fasta: fasta
@@ -94,14 +94,14 @@ steps:
       - sam
       - stderr
   sam2bam:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/samtools/samtools-sam2bam/samtools-sam2bam.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/samtools/samtools-sam2bam/samtools-sam2bam.cwl
     in:
       sam: bwa-mapping/sam
     out:
       - bam
       - stderr
   mark-duplicates:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/picard/picard-mark-duplicates/picard-mark-duplicates.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/picard/picard-mark-duplicates/picard-mark-duplicates.cwl
     in:
       bam: sam2bam/bam
     out:
@@ -110,7 +110,7 @@ steps:
       - stdout
       - stderr
   sort-bam:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/picard/picard-sort-bam/picard-sort-bam.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/picard/picard-sort-bam/picard-sort-bam.cwl
     in:
       bam: mark-duplicates/marked_bam
     out:

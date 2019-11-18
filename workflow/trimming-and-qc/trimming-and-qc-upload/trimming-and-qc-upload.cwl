@@ -26,7 +26,7 @@ inputs:
     default: cwl_upload
 steps:
   qc_fastq:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
       fastq: fastq
@@ -35,7 +35,7 @@ steps:
       - stdout
       - stderr
   trimming:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/trimmomatic/trimmomatic-se/trimmomatic-se.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/trimmomatic/trimmomatic-se/trimmomatic-se.cwl
     in:
       nthreads: nthreads
       fastq: fastq
@@ -44,7 +44,7 @@ steps:
       - stdout
       - stderr
   qc_trimmed_fastq:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/fastqc/fastqc.cwl
     in:
       nthreads: nthreads
       fastq: trimming/trimmed_fastq
@@ -53,7 +53,7 @@ steps:
       - stdout
       - stderr
   s3-upload:
-    run: https://raw.githubusercontent.com/suecharo/SAPPORO_test_workflow/master/tool/s3-upload/s3-upload.cwl
+    run: https://raw.githubusercontent.com/ddbj/SAPPORO_test_workflow/master/tool/s3-upload/s3-upload.cwl
     in:
       endpoint: endpoint
       s3_bucket: s3_bucket
